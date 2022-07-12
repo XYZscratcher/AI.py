@@ -1,11 +1,12 @@
 # -*- coding:utf-8 -*-
 import time
-today=time.localtime()
+today=time.localtime()#将本地时间赋值到变量today
 print("你好！我是小X。")
+"""重复判断"""
 while True:
     s=input()
     t=s.replace("吗","")
-    t=t.replace("？","！")
+    t=t.replace("？","！")#将问句转为语气强烈的陈述句
     if "你"in t and"你好"not in t:
         t=t.replace("你","我")
     t=t.replace("谢谢","不用谢")
