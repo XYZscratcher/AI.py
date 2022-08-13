@@ -1,12 +1,13 @@
 # -*- coding:utf-8 -*-
 import time
-today=time.localtime()#将本地时间赋值到变量today
+import requests
+from bs4 import BeautifulSoup
+today=time.localtime()
 print("你好！我是小X。")
-"""重复判断"""
 while True:
     s=input()
     t=s.replace("吗","")
-    t=t.replace("？","！")#将问句转为语气强烈的陈述句
+    t=t.replace("？","！")
     if "你"in t and"你好"not in t:
         t=t.replace("你","我")
     t=t.replace("谢谢","不用谢")
@@ -23,6 +24,25 @@ while True:
         t="你是在说我吗？"
     if"你能做什么"in s:
         t="为了你，我什么都能做。"
+    if "翻译" in s:
+            text=input('翻译哪个单词？\n')
+            if len(text)>150:
+                raise RuntimeError('你逗我呢 :(')
+            # 发送请求
+            try:
+                x = requests.get('https://dict.youdao.com/result?word={}&lang=en'.format(text))
+                x.encoding="utf-8"
+                soup=BeautifulSoup(x.text,'html.parser')
+                a=soup.find(class_='trans')
+                if len(a.text)>100:
+                    tmp=a.text.split("；", 1)[0]
+                    a="单词"+text+"的意思是：\n"+str(tmp)
+                else:
+                    a="单词 "+text+" 的意思是：\n"+a.text
+                t=a
+            except AttributeError:
+                raise Exception('你输入的不是一个单词哦！')
+        
     if "古诗"in t or"唐诗"in t or"诗词"in t:
         t="""我会一首古诗——
 
